@@ -14,13 +14,70 @@ Utility and covenience functions for Python-Perseus interop.
 Building on the `pandas` package. If you intend to develop
 a plugin for Perseus, please see `PluginInterop <https://www.github.com/jdrudolph/PluginInterop/>`_.
 
-Installation
-------------
-Install using pip directly from `github`:
+Installation (short)
+--------------------
 
 .. code:: bash
 
-    pip install git+https://github.com/jdrudolph/perseuspy.git
+    pip install perseuspy
+
+Updating to the latest version
+------------------------------
+
+.. code:: bash
+
+    pip install --upgrade perseuspy
+
+Installation (Windows long)
+---------------------------
+First open a terminal by searching for `cmd.exe` in the start menu. Here we can easily
+check if all required programs are installed.
+
+#. Check to see if the `pip` executable is already available.
+   ::
+
+      pip install perseuspy
+
+   If there is no error you are already done. If it fails, continue with the next steps.
+#. Navigate to the installation directory of your `Python` installation. If it is installed
+   e.g. `D:/Programs/Python/` we would first change the drive letter (maybe unnecessary)
+   and then go to the installation directory.
+   ::
+
+       D:
+       cd Programs/Python
+
+   Now we should be able to run `python` from the command line.
+   ::
+       
+       python.exe --version
+
+   This should print the installed version of python
+#. Navigate to the `Scripts` directory and run the installation
+   ::
+
+       cd Scripts
+       pip install perseuspy
+
+   If you want to upgrade you installation, run
+   ::
+
+       pip install --upgrade perseuspy
+
+#. Test the installation by navigating back to the `Python` folder and trying to import `perseuspy`.
+   ::
+
+       cd ..
+       python.exe
+
+   Now you should be inside the `python` interpreter. Check the installation by running.
+   ::
+
+       import perseuspy
+
+   If the command doesn't produce any error you can exit `python` by pressing `CTRL+c`.
+#. Add `python` to your `PATH` (optional). Makes it easier for Perseus to find the Python
+   installation. There are many resources on how to add programs to the `PATH` available online.
 
 Usage
 ------------
@@ -72,3 +129,7 @@ for python scripting in Perseus (for networks).
 Generating the documentation
 ----------------------------
 Run `./generate_docs.sh` from `bash`.
+
+Licensing and Contributions
+---------------------------
+`perseuspy` is licensed under the MIT lisence. Contributions are welcome!

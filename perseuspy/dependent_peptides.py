@@ -7,7 +7,7 @@ This code forms the basis for the corresponding Perseus plugin PluginDependentPe
 import pandas as pd
 from perseuspy.io.perseus import read_perseus
 pd.read_perseus = read_perseus
-from perseuspy.io.maxquant import read_experimentalDesign
+from perseuspy.io.maxquant import read_rawFilesTable
 from perseuspy.parameters import fileParam, parse_parameters
 import numpy as np
 
@@ -76,18 +76,29 @@ def _frequent_localizations(df):
         result['DP AA'] = ';'.join(sorted(max_aa))
     return pd.Series(result)
 
-def run_dependent_peptides(paramfile, outfile):
+def run_dependent_peptides_from_parameters(paramfile, outfile):
     """ transform a allPeptides.txt and experimentalDesign.txt table
     into the dependentPeptides.txt table written in outfile.
     :param paramfile: Perseus parameters.xml including at least two FileParam
     entries names 'allPeptides.txt' and 'experimentalDesign.txt'.
-    :param outfile: Path to the output file
+    :param outfile: Path to the output file.
     """
     parameters = parse_parameters(paramfile)
     allPeptides_file = fileParam(parameters, 'allPeptides.txt')
-    experimentalDesign_file = fileParam(parameters, 'experimentalDesign.txt')
-    _dep, localization = read_dependent_peptides(allPeptides_file)
-    exp = read_experimentalDesign(experimentalDesign_file)
-    dep = _set_column_names(_dep, exp).reset_index()
+    rawFilesTable_file = fileParam(parameters, 'Raw files table')
+    run_dependent_peptides(allPeptides_file, rawFilesTable_file, outfile)
+
+def run_dependent_peptides(allPeptides_file, rawFilesTable_file, outfile):
+    """ transform a allPeptides.txt and experimentalDesign.txt table
+    into the dependentPeptides.txt table written in outfile.
+    :param allPeptides_file: MaxQuant 'allPeptides.txt' output table.
+    :param rawFilesTable_file: MaxQuant 'Raw files'-tab table.
+    :param outfile: Path to the output file.
+    """
+    __dep, localization = read_dependent_peptides(allPeptides_file)
+    exp = read_rawFilesTable(rawFilesTable_file)
+    _dep = _set_column_names(__dep, exp)
     main_columns = list(_dep.columns)
+    dep = _dep.join(localization).reset_index()
     dep.to_perseus(outfile, main_columns=main_columns)
+
